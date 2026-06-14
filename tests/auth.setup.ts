@@ -15,7 +15,7 @@ setup('authenticate via magic link', async ({ page, baseURL }) => {
 
     const afterUid = await emailHelper.getInboxUidNext();
 
-    await pages.mainPage.goto(baseURL!);
+    await pages.website.goto(baseURL!);
     await pages.loginPopup.loginWithEmail(EMAIL_USER);
 
     const magicLink = await emailHelper.waitForMagicLink(afterUid);
