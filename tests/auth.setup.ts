@@ -1,11 +1,10 @@
 import { test as setup } from '@playwright/test';
 import { Pages } from '../POM/Pages';
 import { EmailHelper } from '../Helpers/EmailHelper';
+import { authFile } from '../Helpers/constants';
 
 const EMAIL_USER = process.env.EMAIL_USER!;
 const EMAIL_PASS = process.env.EMAIL_PASS!;
-
-export const authFile = 'playwright/.auth/user.json';
 
 setup('authenticate via magic link', async ({ page, baseURL }) => {
     setup.setTimeout(120_000);

@@ -5,6 +5,8 @@ import { MainPage } from "./MainPage";
 import { UserCabinet } from "./Popups/UserCabinet";
 import { FileUpload } from "./FileUploadPage";
 import { LanguageDetectorPopup } from "./Popups/LanguageDetectorPopup";
+import { Copilot } from "./Copilot";
+import { DeepThinkingPopup } from "./Popups/DeepThinkingPopup";
 
 
 export class Pages{
@@ -14,6 +16,8 @@ export class Pages{
     userCabinet: UserCabinet
     uploadFile: FileUpload
     languageDetectorPopup: LanguageDetectorPopup
+    copilot: Copilot
+    deepThinkPopup: DeepThinkingPopup
 
     constructor(page: Page){
         this.website = new Website(page)
@@ -22,5 +26,7 @@ export class Pages{
         this.userCabinet = new UserCabinet(page)
         this.uploadFile = new FileUpload(page)
         this.languageDetectorPopup = new LanguageDetectorPopup(page)
+        this.copilot = new Copilot(page)
+        this.deepThinkPopup = new DeepThinkingPopup(page)
     }
 }
