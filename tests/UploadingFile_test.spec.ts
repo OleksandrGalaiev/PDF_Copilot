@@ -3,14 +3,14 @@ import {test} from "../test-options"
 import path from "path"
 
 
-test.describe('Uploading file', {tag:'@sanity'}, async()=>{
+test.describe('Main actions with file', {tag:'@sanity'}, async()=>{
     // Також такий тест можна зробити через test.describe.configure({'mode':'serial'})
     // Тоді тести будуть виконуватись по порядку, але тк це не зовсім прийнята практика, то я не робив. 
     // Тести мають бути ізолбовані
 
     const EMPTY_PDF_PATH = path.join(__dirname, '../pdfFiles/emptyFilePfd.pdf')
 
-    test("Main actions with file. Upload, rename and delete", {tag:'@fileUpload'}, async({app, page, baseURL})=>{
+    test("Upload,rename and delete", {tag:'@fileUpload'}, async({app, page, baseURL})=>{
         await test.step('Upload empty pdf file to platform', async()=>{
             await app.mainPage.goto(baseURL)
             await app.uploadFile.fileUpload(EMPTY_PDF_PATH)
@@ -30,5 +30,4 @@ test.describe('Uploading file', {tag:'@sanity'}, async()=>{
             await expect(app.uploadFile.noFileMessage).toHaveText('Upload your first PDF to get instant insights')
         })
     })
-
 })

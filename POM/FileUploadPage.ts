@@ -12,6 +12,7 @@ export class FileUpload extends BasePage{
     private activeDocument: Locator
     noFileMessage: Locator
     languageDetectorPopup: LanguageDetectorPopup
+    displayedFileName: Locator
 
     constructor(page:Page){
         super(page)
@@ -23,6 +24,7 @@ export class FileUpload extends BasePage{
         this.activeDocument = page.locator("//div[contains(@class, 'active-file')]")
         this.noFileMessage = page.locator('.no-files-msg')
         this.languageDetectorPopup = new LanguageDetectorPopup(this.page)
+        this.displayedFileName = page.locator('.document-name')
     }
 
     async chooseDocumentMenuPoint(menuPoint:DocumentActionsMenuPoints){
