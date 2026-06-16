@@ -89,59 +89,6 @@ export class RequestHandler{
         return await data
     }
 
-    async POST_Request_withSavingState(statusCode: number, stateStorage?:string){
-        let url = this.getUrl()
-        this.logger.logReguest('POST', url, {'headers': this.apiHeaders}, this.apiBody)
-        let response = await this.request.post(
-            url, {
-                headers: this.apiHeaders, 
-                data: this.apiBody
-            })
-        this.cleanUpFileds()
-        let actualStatus = await response.status()
-        let data =  await response.json()
-        
-        this.logger.logResponse(actualStatus, data)
-        this.statusCodeValidator(actualStatus, statusCode, this.POST_Request)
-        let state = null
-        if(stateStorage){
-            state = await this.request.storageState({path:stateStorage})
-        }
-        return await data
-    }
-
-
-    async PUT_Request(statusCode: number){
-        let url = this.getUrl()
-        this.logger.logReguest('PUT', url, {'headers': this.apiHeaders}, this.apiBody)
-        let response = await this.request.put(
-            url, {
-                headers: this.apiHeaders, 
-                data: this.apiBody
-            })
-        this.cleanUpFileds()
-        let actualStatus = await response.status()
-        let data =  await response.json()
-        this.logger.logResponse(actualStatus, data)
-        this.statusCodeValidator(actualStatus, statusCode, this.PUT_Request)
-        //expect(actualStatus).toEqual(statusCode)
-        return await data
-    }
-
-    async DELETE_Request(statusCode: number){
-        let url = this.getUrl()
-        this.logger.logReguest('POST', url, {'headers': this.apiHeaders})
-        let response = await this.request.delete(
-            url, {
-                headers: this.apiHeaders, 
-            })
-        this.cleanUpFileds()
-        let actualStatus = await response.status()
-        this.statusCodeValidator(actualStatus, statusCode, this.DELETE_Request)
-        //expect(actualStatus).toEqual(statusCode)
-    }
-
-
     private statusCodeValidator(actualCode: number, expectedCode: number, calledFunction: Function){
         if(actualCode !== expectedCode){
             let logs = this.logger.getResentLogs()
