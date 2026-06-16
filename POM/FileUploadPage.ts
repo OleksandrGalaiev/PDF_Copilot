@@ -39,18 +39,22 @@ export class FileUpload extends BasePage{
     }
 
     async fileUpload(fileUrl:string){
-        if(await this.languageDetectorPopup.popupHeader.isVisible()){
-            await this.languageDetectorPopup.closeBtn.click()
-        }
-        if(await this.activeDocument.isVisible()){
-            await this.chooseDocumentMenuPoint('Delete')
-            await this.deleteBtn.click()
-            await this.noFileMessage.waitFor({state:'visible'})
-        }
         const [fileChooser] = await Promise.all([
             this.page.waitForEvent('filechooser'),
             this.uploadFileBtn.click()
         ])
         await fileChooser.setFiles(fileUrl)
+    }
+
+    async deleteFileIfExist(){
+        if(await this.languageDetectorPopup.popupHeader.isVisible()){
+            await this.languageDetectorPopup.closeBtn.click()
+        }
+        while(await this.activeDocument.isVisible()){
+            await this.page.locator('[aria-label="Document menu"]').first().click()
+            await this.page.locator('.context-menu-item', {hasText: 'Delete'}).click()
+            await this.deleteBtn.click()
+            await this.deleteBtn.waitFor({state: 'hidden'})
+        }
     }
 }
