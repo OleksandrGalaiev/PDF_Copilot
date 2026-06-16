@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test:ui": "playwright test",
+    "test:ui:chromium": "playwright test --project=chromium",
+    "test:ui:sanity": "playwright test --grep @sanity",
+    "test:ui:copilot": "playwright test --grep @copilot",
+    "test:api": "playwright test --config=API/playwright.api.config.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -15,5 +21,8 @@
     "dotenv": "^17.4.2",
     "imapflow": "^1.4.0",
     "mailparser": "^3.9.9"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
   }
 }
