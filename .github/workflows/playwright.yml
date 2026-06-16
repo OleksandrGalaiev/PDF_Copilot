@@ -16,6 +16,41 @@ on:
           - all
           - ui
           - api
+      project:
+        description: 'Browser project (UI tests only)'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - chromium
+          - firefox
+      tag:
+        description: 'Test tag filter (UI tests only)'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - '@sanity'
+          - '@copilot'
+      test_env:
+        description: 'Test environment (API tests only)'
+        required: false
+        default: 'prod'
+        type: choice
+        options:
+          - prod
+          - staging
+      api_tag:
+        description: 'Test tag filter (API tests only)'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - '@api'
+          - '@documents'
 
 jobs:
   test-ui:
@@ -36,7 +71,19 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run UI tests
-        run: npm run test:ui
+        env:
+          UI_PROJECT: ${{ inputs.project }}
+          UI_TAG: ${{ inputs.tag }}
+        run: |
+          CMD="npx playwright test"
+          if [ -n "$UI_PROJECT" ] && [ "$UI_PROJECT" != "all" ]; then
+            CMD="$CMD --project=$UI_PROJECT"
+          fi
+          if [ -n "$UI_TAG" ] && [ "$UI_TAG" != "all" ]; then
+            CMD="$CMD --grep $UI_TAG"
+          fi
+          echo "Running: $CMD"
+          eval $CMD
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
@@ -52,6 +99,7 @@ jobs:
     env:
       EMAIL_USER: ${{ secrets.EMAIL_USER }}
       EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+      TEST_ENV: ${{ inputs.test_env || 'prod' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -62,7 +110,15 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install chromium --with-deps
       - name: Run API tests
-        run: npm run test:api
+        env:
+          API_TAG: ${{ inputs.api_tag }}
+        run: |
+          CMD="npx playwright test --config=API/playwright.api.config.ts"
+          if [ -n "$API_TAG" ] && [ "$API_TAG" != "all" ]; then
+            CMD="$CMD --grep $API_TAG"
+          fi
+          echo "Running: $CMD"
+          eval $CMD
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
