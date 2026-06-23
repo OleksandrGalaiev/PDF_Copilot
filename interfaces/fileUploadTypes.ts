@@ -1,4 +1,3 @@
+export type DocumentActionsMenuPoints = 'Download' | 'Rename' | 'Delete';
 
-export type DocumentActionsMenuPoints = 'Download'|'Rename'|"Delete"
-
-export type Languages = 'English'|'Korean'|'Italian'
+export type Languages = 'English' | 'Korean' | 'Italian';

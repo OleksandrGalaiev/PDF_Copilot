@@ -1,2 +1,1 @@
-
-export type UserCabineMenuItems = 'Account'|'Sign Out'
+export type UserCabineMenuItems = 'Account' | 'Sign Out';

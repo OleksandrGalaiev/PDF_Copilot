@@ -1,20 +1,18 @@
-import { Locator, Page } from "playwright";
-import { BasePage } from "./BasePage";
+import { Locator, Page } from 'playwright';
+import { BasePage } from './BasePage';
 
+export class Website extends BasePage {
+  private headerBtns: Locator;
+  loginBtn: Locator;
 
-export class Website extends BasePage{
-    private headerBtns: Locator
-    loginBtn: Locator
+  constructor(page: Page) {
+    super(page);
+    this.headerBtns = page.locator('.header');
+    this.loginBtn = page.locator("//a[text()='Log in']");
+  }
 
-    constructor(page: Page){
-        super(page)
-        this.headerBtns = page.locator(".header")
-        this.loginBtn = page.locator("//a[text()='Log in']")
-    }
-
-    async goto(url: string){
-        await super.goto(url)
-        await this.headerBtns.waitFor({'state': 'visible'})
-    }
-    
+  async goto(url: string) {
+    await super.goto(url);
+    await this.headerBtns.waitFor({ state: 'visible' });
+  }
 }

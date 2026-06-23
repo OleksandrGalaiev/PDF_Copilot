@@ -1,15 +1,13 @@
-import { Page } from "playwright";
+import { Page } from 'playwright';
 
+export class BasePage {
+  protected page: Page;
 
-export class BasePage{
-    protected page: Page
+  constructor(page: Page) {
+    this.page = page;
+  }
 
-    constructor(page: Page){
-        this.page = page
-    }
-
-    async goto(url: string){
-        await this.page.goto(url)
-    }
-
+  async goto(url: string) {
+    await this.page.goto(url);
+  }
 }
