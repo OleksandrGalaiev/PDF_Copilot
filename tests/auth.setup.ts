@@ -1,4 +1,4 @@
-import { test as setup } from '@playwright/test';
+import { test as setup, expect } from '@playwright/test';
 import { Pages } from '../POM/Pages';
 import { EmailHelper } from '../Helpers/EmailHelper';
 import { authFile } from '../Helpers/constants';
@@ -21,7 +21,7 @@ setup('authenticate via magic link', async ({ page, baseURL }) => {
 
   await page.goto(magicLink);
 
-  await page.getByRole('button', { name: 'Upload file' }).first().waitFor({ state: 'visible' });
+  await expect(page.getByRole('button', { name: 'Upload file' }).first()).toBeVisible();
 
   await page.context().storageState({ path: authFile });
 });

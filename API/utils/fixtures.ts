@@ -14,7 +14,7 @@ export const test = base.extend<TestOptions>({
     const requestHandler = new RequestHandler(request, config.PDF_API_PROD, logger);
     await use(requestHandler);
   },
-  config: async ({}, use) => {
+  config: async (_ctx, use) => {
     await use(config);
   },
 });

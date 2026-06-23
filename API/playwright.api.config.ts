@@ -12,11 +12,11 @@ export default defineConfig({
   projects: [
     {
       name: 'setup',
-      testMatch: /tests[\/\\]auth\.setup\.ts$/,
+      testMatch: /tests[/\\]auth\.setup\.ts$/,
     },
     {
       name: 'api',
-      testMatch: /API[\/\\]API_tests[\/\\].+\.spec\.ts$/,
+      testMatch: /API[/\\]API_tests[/\\].+\.spec\.ts$/,
       use: {
         storageState: path.resolve(__dirname, '../playwright/.auth/user.json'),
       },

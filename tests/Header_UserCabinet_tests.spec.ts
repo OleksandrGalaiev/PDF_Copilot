@@ -9,8 +9,8 @@ test.describe('Session restore and logout', { tag: '@sanity' }, () => {
     { tag: '@loginLogout' },
     async ({ app, baseURL }) => {
       await test.step('Open main page with saved storage state', async () => {
-        await app.mainPage.goto(baseURL);
-        await expect(await app.mainPage.copilot).toBeVisible();
+        await app.mainPage.goto(baseURL!);
+        await expect(app.mainPage.copilot).toBeVisible();
       });
 
       await test.step('User make log out via header - user cabinet', async () => {
@@ -24,7 +24,7 @@ test.describe('Session restore and logout', { tag: '@sanity' }, () => {
 
 test.describe('User cabinet', { tag: '@sanity' }, () => {
   test.beforeEach('Open main page', async ({ app, baseURL }) => {
-    await app.mainPage.goto(baseURL);
+    await app.mainPage.goto(baseURL || '');
     await app.userCabinet.openUserCabinet();
   });
 

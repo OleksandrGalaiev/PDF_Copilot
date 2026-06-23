@@ -42,6 +42,7 @@ export class EmailHelper {
         const lock = await client.getMailboxLock('INBOX');
         try {
           const uids = await client.search({ uid: `${afterUid}:*` }, { uid: true });
+          if (!uids || uids.length === 0) continue;
           for (const uid of [...uids].sort((a, b) => b - a)) {
             const { content } = await client.download(uid, undefined, { uid: true });
             const parsed = await simpleParser(content);

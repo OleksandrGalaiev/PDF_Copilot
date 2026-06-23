@@ -36,12 +36,10 @@ test.describe('Documents API', { tag: '@api' }, () => {
     { tag: '@documents' },
     async ({ api, config }) => {
       const data = await api.url(config.PDF_API_PROD).path('/user/account').GET_Request(200);
-      const result = userAccountSchema.safeParse(data);
-      expect(result.success, JSON.stringify(result.error?.errors, null, 2)).toBe(true);
-
-      expect(data.email).toEqual(process.env.EMAIL_USER);
-      expect(data.plan.name).toEqual('Free');
-      expect(data.plan.status).toEqual('active');
+      const account = userAccountSchema.parse(data);
+      expect(account.email).toEqual(process.env.EMAIL_USER);
+      expect(account.plan.name).toEqual('Free');
+      expect(account.plan.status).toEqual('active');
     },
   );
 

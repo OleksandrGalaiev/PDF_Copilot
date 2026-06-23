@@ -9,9 +9,9 @@ test.describe('Main actions with file', { tag: '@sanity' }, () => {
 
   const EMPTY_PDF_PATH = path.join(__dirname, '../pdfFiles/emptyFilePfd.pdf');
 
-  test('Upload,rename and delete', { tag: '@fileUpload' }, async ({ app, page, baseURL }) => {
+  test('Upload,rename and delete', { tag: '@fileUpload' }, async ({ app, baseURL }) => {
     await test.step('Upload empty pdf file to platform', async () => {
-      await app.mainPage.goto(baseURL);
+      await app.mainPage.goto(baseURL || '');
       await app.uploadFile.fileUpload(EMPTY_PDF_PATH);
     });
 

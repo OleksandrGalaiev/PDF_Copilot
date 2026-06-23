@@ -1,6 +1,6 @@
 import { Locator, Page } from 'playwright';
 import { BasePage } from '../BasePage';
-import { UserCabineMenuItems } from '..//interfaces/userCabinetTypes';
+import { UserCabineMenuItems } from '../../interfaces/userCabinetTypes';
 
 export class UserCabinet extends BasePage {
   private userAvatar: Locator;
