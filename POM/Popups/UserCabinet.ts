@@ -1,23 +1,23 @@
-import { Locator, Page } from 'playwright';
-import { BasePage } from '../BasePage';
-import { UserCabineMenuItems } from '../../interfaces/userCabinetTypes';
+import { Locator, Page } from '@playwright/test';
+import { BasePage } from '@pages/BasePage';
+import { UserCabineMenuItems } from '@interfaces/userCabinetTypes';
 
 export class UserCabinet extends BasePage {
   private userAvatar: Locator;
   private accountMenu: Locator;
-  settingsEmail: Locator;
-  accountEmail: Locator;
-  upgradeBtn: Locator;
-  upgradePlanPopup: Locator;
-  planBudget: Locator;
+  readonly settingsEmail: Locator;
+  readonly accountEmail: Locator;
+  private upgradeBtn: Locator;
+  readonly upgradePlanPopup: Locator;
+  readonly planBudget: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.userAvatar = page.locator("//div[contains(@class, 'userAvatar')]");
+    this.userAvatar = page.locator('[class*=userAvatar_]');
     this.accountMenu = page.locator('.account-menu');
     this.settingsEmail = page.locator('.email');
     this.accountEmail = page.locator('.account-email');
-    this.upgradeBtn = this.accountMenu.locator("//button[contains(@class, 'upgrade-button')]");
+    this.upgradeBtn = this.accountMenu.getByRole('button', { name: 'Upgrade' });
     this.upgradePlanPopup = page.locator('.ultimate-billing-plan-container');
     this.planBudget = this.accountMenu.locator("//div[contains(@class, 'plan-badge')]");
   }
@@ -28,5 +28,8 @@ export class UserCabinet extends BasePage {
   async openUserCabinet() {
     await this.userAvatar.click();
     await this.accountMenu.waitFor({ state: 'visible' });
+  }
+  async openUpgradePopup() {
+    await this.upgradeBtn.click();
   }
 }

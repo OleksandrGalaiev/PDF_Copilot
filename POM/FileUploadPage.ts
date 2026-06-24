@@ -1,33 +1,36 @@
 import { Locator, Page } from '@playwright/test';
-import { BasePage } from './BasePage';
-import { DocumentActionsMenuPoints } from '../interfaces/fileUploadTypes';
-import { LanguageDetectorPopup } from './Popups/LanguageDetectorPopup';
+import { BasePage } from '@pages/BasePage';
+import { DocumentActionsMenuPoints } from '@interfaces/fileUploadTypes';
+import { LanguageDetectorPopup } from '@pages/Popups/LanguageDetectorPopup';
 
 export class FileUpload extends BasePage {
-  uploadFileBtn: Locator;
+  private uploadFileBtn: Locator;
   private documentMenu: Locator;
   private renameMenuField: Locator;
-  deleteBtn: Locator;
-  fileName: Locator;
+  private deleteBtn: Locator;
+  readonly fileName: Locator;
   private activeDocument: Locator;
   noFileMessage: Locator;
   languageDetectorPopup: LanguageDetectorPopup;
-  displayedFileName: Locator;
+  private documentHeader: Locator;
+  private displayedFileName: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.uploadFileBtn = page.locator('.pdf-upload-button');
-    this.documentMenu = page.locator('[aria-label="Document menu"]').nth(1);
-    this.renameMenuField = page.locator('[aria-label="Rename file"]');
+    this.uploadFileBtn = page.getByRole('button', { name: 'upload icon Upload file' });
+    this.documentHeader = page.locator('.pdf-document-header');
+    this.documentMenu = this.documentHeader.getByRole('button', { name: 'Document menu' });
+    this.renameMenuField = page.getByRole('textbox', { name: 'Rename file' });
     this.deleteBtn = page.locator('.delete-popup-delete');
     this.fileName = page.locator('.pdf-file-name');
-    this.activeDocument = page.locator("//div[contains(@class, 'active-file')]");
+    this.activeDocument = page.locator('[class*=active-file]');
     this.noFileMessage = page.locator('.no-files-msg');
     this.languageDetectorPopup = new LanguageDetectorPopup(this.page);
     this.displayedFileName = page.locator('.document-name');
   }
 
   async chooseDocumentMenuPoint(menuPoint: DocumentActionsMenuPoints) {
+    await this.documentMenu.waitFor({ state: 'visible' });
     await this.documentMenu.click();
     await this.page.locator('.context-menu-item', { hasText: menuPoint }).click();
   }
@@ -47,14 +50,21 @@ export class FileUpload extends BasePage {
   }
 
   async deleteFileIfExist() {
-    if (await this.languageDetectorPopup.popupHeader.isVisible()) {
-      await this.languageDetectorPopup.closeBtn.click();
-    }
+    await this.languageDetectorPopup.closeIfVisible();
     while (await this.activeDocument.isVisible()) {
-      await this.page.locator('[aria-label="Document menu"]').first().click();
+      await this.documentMenu.click();
       await this.page.locator('.context-menu-item', { hasText: 'Delete' }).click();
       await this.deleteBtn.click();
       await this.deleteBtn.waitFor({ state: 'hidden' });
     }
+  }
+
+  async waitForUploadedFileNameToBeDisplayed() {
+    await this.displayedFileName.waitFor({ state: 'visible' });
+  }
+
+  async deleteFile() {
+    await this.chooseDocumentMenuPoint('Delete');
+    await this.deleteBtn.click();
   }
 }

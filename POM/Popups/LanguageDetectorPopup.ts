@@ -1,24 +1,36 @@
 import { Locator, Page } from '@playwright/test';
-import { BasePage } from '../BasePage';
-import { Languages } from '..//../interfaces/fileUploadTypes';
+import { BasePage } from '@pages/BasePage';
+import { Languages } from '@interfaces/fileUploadTypes';
 
 export class LanguageDetectorPopup extends BasePage {
-  closeBtn: Locator;
+  private closeBtn: Locator;
   private openLanguageDropdown: Locator;
-  popupHeader: Locator;
+  private popupHeader: Locator;
   private continueBtn: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.closeBtn = page.locator('[aria-label="Close"]');
-    this.openLanguageDropdown = page.locator("//span[contains(@class, 'triggerActions')]");
-    this.popupHeader = page.locator('//h5[text()="We couldn’t detect the language"]');
-    this.continueBtn = page.locator("//button[text()='Continue with OCR']");
+    this.closeBtn = page.getByRole('button', { name: 'Close' });
+    this.openLanguageDropdown = page.getByRole('button', { name: 'Choose language' });
+    this.popupHeader = page.getByRole('heading', { name: 'We couldn’t detect the language' });
+    this.continueBtn = page.getByRole('button', { name: 'Continue with OCR' });
   }
 
   async chooseLanguage(languages: Languages) {
+    await this.popupHeader.waitFor({ state: 'visible' });
     await this.openLanguageDropdown.click();
-    await this.page.locator("//button[@role='option']", { hasText: languages }).click();
+    await this.page.getByRole('option', { name: languages }).click();
     await this.continueBtn.click();
+  }
+
+  async closeChooseLanguagePopup() {
+    await this.popupHeader.waitFor({ state: 'visible', timeout: 20000 });
+    await this.closeBtn.click();
+  }
+
+  async closeIfVisible() {
+    if (await this.popupHeader.isVisible()) {
+      await this.closeBtn.click();
+    }
   }
 }

@@ -1,8 +1,8 @@
 import { Locator, Page } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { BasePage } from '@pages/BasePage';
 
 export class Copilot extends BasePage {
-  overviewText: Locator;
+  private overviewText: Locator;
   private askAi: Locator;
   private chatSendBtn: Locator;
   private aiChat: Locator;
@@ -40,5 +40,9 @@ export class Copilot extends BasePage {
     const msgId = await userQuestion.getAttribute('data-user-msg-id');
     const aiAnswer = this.aiChat.locator(`[data-ai-msg-id="${msgId}-answer"]`);
     return aiAnswer;
+  }
+
+  async waitForOverviewText() {
+    await this.overviewText.waitFor({ state: 'visible' });
   }
 }

@@ -1,7 +1,7 @@
 import { test as setup, expect } from '@playwright/test';
-import { Pages } from '../POM/Pages';
-import { EmailHelper } from '../Helpers/EmailHelper';
-import { authFile } from '../Helpers/constants';
+import { Pages } from '@pages/Pages';
+import { EmailHelper } from '@helpers/EmailHelper';
+import { authFile } from '@helpers/constants';
 
 const EMAIL_USER = process.env.EMAIL_USER!;
 const EMAIL_PASS = process.env.EMAIL_PASS!;

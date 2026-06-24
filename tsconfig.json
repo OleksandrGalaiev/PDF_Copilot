@@ -1,14 +1,21 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "noEmit": true
+    "noEmit": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@pages/*": ["POM/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@helpers/*": ["helpers/*"]
+    }
   },
-  "include": ["src", "tests"]
+  "include": ["POM", "tests"]
 }

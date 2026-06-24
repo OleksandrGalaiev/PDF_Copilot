@@ -9,15 +9,18 @@ test.describe('Main actions with file', { tag: '@sanity' }, () => {
 
   const EMPTY_PDF_PATH = path.join(__dirname, '../pdfFiles/emptyFilePfd.pdf');
 
-  test('Upload,rename and delete', { tag: '@fileUpload' }, async ({ app, baseURL }) => {
+  test.beforeEach('Delete file if exist', async ({ app, baseURL }) => {
+    await app.mainPage.goto(baseURL || '');
+    await app.uploadFile.deleteFileIfExist();
+  });
+
+  test('Upload,rename and delete', { tag: '@debug' }, async ({ app }) => {
     await test.step('Upload empty pdf file to platform', async () => {
-      await app.mainPage.goto(baseURL || '');
       await app.uploadFile.fileUpload(EMPTY_PDF_PATH);
     });
 
     await test.step("Wait for Coundn't detect language popup and close it", async () => {
-      await app.languageDetectorPopup.popupHeader.waitFor({ state: 'visible' });
-      await app.languageDetectorPopup.closeBtn.click();
+      await app.languageDetectorPopup.closeChooseLanguagePopup();
     });
 
     await test.step('Rename file to TestFile', async () => {
@@ -27,8 +30,7 @@ test.describe('Main actions with file', { tag: '@sanity' }, () => {
     });
 
     await test.step('Delete file', async () => {
-      await app.uploadFile.chooseDocumentMenuPoint('Delete');
-      await app.uploadFile.deleteBtn.click();
+      await app.uploadFile.deleteFile();
       await expect(app.uploadFile.noFileMessage).toHaveText(
         'Upload your first PDF to get instant insights',
       );

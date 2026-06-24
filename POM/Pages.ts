@@ -1,12 +1,12 @@
-import { Page } from 'playwright';
-import { Website } from './Website';
-import { LoginPopup } from './Popups/LoginPopup';
-import { MainPage } from './MainPage';
-import { UserCabinet } from './Popups/UserCabinet';
-import { FileUpload } from './FileUploadPage';
-import { LanguageDetectorPopup } from './Popups/LanguageDetectorPopup';
-import { Copilot } from './Copilot';
-import { DeepThinkingPopup } from './Popups/DeepThinkingPopup';
+import { Page } from '@playwright/test';
+import { Website } from '@pages/Website';
+import { LoginPopup } from '@pages/Popups/LoginPopup';
+import { MainPage } from '@pages/MainPage';
+import { UserCabinet } from '@pages/Popups/UserCabinet';
+import { FileUpload } from '@pages/FileUploadPage';
+import { LanguageDetectorPopup } from '@pages/Popups/LanguageDetectorPopup';
+import { Copilot } from '@pages/Copilot';
+import { DeepThinkingPopup } from '@pages/Popups/DeepThinkingPopup';
 
 export class Pages {
   website: Website;

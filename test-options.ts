@@ -1,6 +1,6 @@
 import { Pages } from './POM/Pages';
 import { test as base, APIRequestContext, request } from '@playwright/test';
-import { authFile } from './Helpers/constants';
+import { authFile } from './helpers/constants';
 
 export type TestOptions = {
   app: Pages;

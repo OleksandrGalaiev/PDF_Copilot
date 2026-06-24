@@ -19,38 +19,36 @@ test.describe('AI Copilot chat', { tag: '@sanity' }, () => {
       let userMessage;
       let copilotAnswer;
       const questionForCopilot = 'What text do you see?';
-      try {
-        await test.step('Open main page and close deep thinking popup if exist', async () => {
-          await app.mainPage.goto(baseURL!);
-          await app.deepThinkPopup.closeDeepThinkingPopupIfExist();
-          await app.uploadFile.deleteFileIfExist();
-        });
 
-        await test.step('Upload file', async () => {
-          await app.uploadFile.fileUpload(PDF_FILE);
-        });
-
-        await test.step('Choose english language on Choose language Popup', async () => {
-          await app.languageDetectorPopup.popupHeader.waitFor({ state: 'visible' });
-          await app.languageDetectorPopup.chooseLanguage('English');
-          await app.uploadFile.displayedFileName.waitFor({ state: 'visible' });
-        });
-
-        await test.step(`Ask Copilot about text in the document. Question - ${questionForCopilot}`, async () => {
-          await app.copilot.overviewText.waitFor({ state: 'visible' });
-          userMessage = await app.copilot.askAiCopilot(questionForCopilot);
-          copilotAnswer = await app.copilot.getAiCopilotAnswer(userMessage);
-          await copilotAnswer.waitFor({ state: 'visible' });
-        });
-
-        await test.step('Check copilot answer has text from document', async () => {
-          const copilotAnswerText = await app.copilot.getCopilotAnswerText(questionForCopilot);
-          expect(copilotAnswerText).toContain('Hello world!');
-        });
-      } finally {
+      await test.step('Open main page and close deep thinking popup if exist', async () => {
+        await app.mainPage.goto(baseURL!);
         await app.deepThinkPopup.closeDeepThinkingPopupIfExist();
-        await app.uploadFile.deleteFileIfExist();
-      }
+      });
+
+      await test.step('Upload file', async () => {
+        await app.uploadFile.fileUpload(PDF_FILE);
+      });
+
+      await test.step('Choose english language on Choose language Popup', async () => {
+        await app.languageDetectorPopup.chooseLanguage('English');
+        await app.uploadFile.waitForUploadedFileNameToBeDisplayed();
+      });
+
+      await test.step(`Ask Copilot about text in the document. Question - ${questionForCopilot}`, async () => {
+        await app.copilot.waitForOverviewText();
+        userMessage = await app.copilot.askAiCopilot(questionForCopilot);
+        copilotAnswer = await app.copilot.getAiCopilotAnswer(userMessage);
+        await copilotAnswer.waitFor({ state: 'visible' });
+      });
+
+      await test.step('Check copilot answer has text from document', async () => {
+        const copilotAnswerText = await app.copilot.getCopilotAnswerText(questionForCopilot);
+        expect(copilotAnswerText).toContain('Hello world!');
+      });
+      // } finally {
+      //   await app.deepThinkPopup.closeDeepThinkingPopupIfExist();
+      //   await app.uploadFile.deleteFileIfExist();
+      // }
     },
   );
 });

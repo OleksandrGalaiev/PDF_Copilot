@@ -1,14 +1,12 @@
-import { Locator, Page } from 'playwright';
-import { BasePage } from './BasePage';
+import { Locator, Page } from '@playwright/test';
+import { BasePage } from '@pages/BasePage';
 
 export class Website extends BasePage {
   private headerBtns: Locator;
-  loginBtn: Locator;
 
   constructor(page: Page) {
     super(page);
     this.headerBtns = page.locator('.header');
-    this.loginBtn = page.locator("//a[text()='Log in']");
   }
 
   async goto(url: string) {

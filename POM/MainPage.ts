@@ -1,13 +1,13 @@
 import { Locator, Page } from '@playwright/test';
-import { BasePage } from './BasePage';
+import { BasePage } from '@pages/BasePage';
 
 export class MainPage extends BasePage {
-  sidebar: Locator;
+  private sidebar: Locator;
   copilot: Locator;
 
   constructor(page: Page) {
     super(page);
-    this.sidebar = page.locator("//div[contains(@class, 'pdf-files-sidebar')]");
+    this.sidebar = page.locator('[class*=pdf-files-sidebar]');
     this.copilot = page.locator('.ai-copilot');
   }
 

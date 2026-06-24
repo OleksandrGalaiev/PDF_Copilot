@@ -16,7 +16,7 @@ test.describe('Session restore and logout', { tag: '@sanity' }, () => {
       await test.step('User make log out via header - user cabinet', async () => {
         await app.userCabinet.openUserCabinet();
         await app.userCabinet.chooseUserCabineMenuItem('Sign Out');
-        await expect(app.loginPopup.emailInput).toBeVisible();
+        await expect(app.loginPopup.loginDialog).toBeVisible();
       });
     },
   );
@@ -28,7 +28,7 @@ test.describe('User cabinet', { tag: '@sanity' }, () => {
     await app.userCabinet.openUserCabinet();
   });
 
-  test('User cabinet shows "FREE" plan badge', { tag: '@userCabinet' }, async ({ app }) => {
+  test('User cabinet shows "FREE" plan badget', { tag: '@userCabinet' }, async ({ app }) => {
     await expect(app.userCabinet.planBudget).toHaveText('FREE');
   });
 
@@ -36,7 +36,7 @@ test.describe('User cabinet', { tag: '@sanity' }, () => {
     "Upgrade plan popup opens on 'Upgrade' button click",
     { tag: '@userCabinet' },
     async ({ app }) => {
-      await app.userCabinet.upgradeBtn.click();
+      await app.userCabinet.openUpgradePopup();
       await expect(app.userCabinet.upgradePlanPopup).toBeVisible();
     },
   );

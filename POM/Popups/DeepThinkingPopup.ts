@@ -1,5 +1,5 @@
-import { Locator, Page } from 'playwright';
-import { BasePage } from '../BasePage';
+import { Locator, Page } from '@playwright/test';
+import { BasePage } from '@pages/BasePage';
 
 export class DeepThinkingPopup extends BasePage {
   private deepThiningPopup: Locator;
@@ -8,12 +8,12 @@ export class DeepThinkingPopup extends BasePage {
   constructor(page: Page) {
     super(page);
     this.deepThiningPopup = this.page.locator('#whats-new-deep-thinking');
-    this.deepThinkingButton = this.page.locator("//button[text()='Try Deep Thinking']");
+    this.deepThinkingButton = this.page.getByRole('button', { name: 'Try Deep Thinking' });
   }
   async closeDeepThinkingPopupIfExist() {
-    await this.page.waitForTimeout(500);
-    if (await this.deepThiningPopup.isVisible()) {
+    try {
+      await this.deepThiningPopup.waitFor({ state: 'visible', timeout: 3000 });
       await this.deepThinkingButton.click();
-    }
+    } catch {}
   }
 }
