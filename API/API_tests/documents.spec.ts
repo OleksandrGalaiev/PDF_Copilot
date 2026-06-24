@@ -1,7 +1,7 @@
-import { test } from '../utils/fixtures';
+import { test } from '@utils/fixtures';
 import { expect } from '@playwright/test';
-import { recentDocumentsSchema } from '../utils/ZOD_JSON_schemas/documentsSchema';
-import { userAccountSchema } from '../utils/ZOD_JSON_schemas/userAccountSchema';
+import { recentDocumentsSchema } from '@utils/ZOD_JSON_schemas/documentsSchema';
+import { userAccountSchema } from '@utils/ZOD_JSON_schemas/userAccountSchema';
 
 test.describe('Documents API', { tag: '@api' }, () => {
   test(
@@ -10,7 +10,7 @@ test.describe('Documents API', { tag: '@api' }, () => {
     async ({ api, config }) => {
       const data = await api.url(config.PDF_API_PROD).path('/documents/recent').GET_Request(200);
       const result = recentDocumentsSchema.safeParse(data);
-      expect(result.success, JSON.stringify(result.error?.errors, null, 2)).toBe(true);
+      expect(result.success, JSON.stringify(result.error?.issues, null, 2)).toBe(true);
     },
   );
 

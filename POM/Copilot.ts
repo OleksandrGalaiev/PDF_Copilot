@@ -7,14 +7,16 @@ export class Copilot extends BasePage {
   private chatSendBtn: Locator;
   private aiChat: Locator;
   private deepThinkingBtn: Locator;
+  private latestUserMsgId: Locator;
 
   constructor(page: Page) {
     super(page);
     this.overviewText = page.locator("//div[contains(@class, 'overviewText')]");
-    this.askAi = page.locator('[aria-label="Ask PDF Copilot"]');
+    this.askAi = page.getByRole('textbox', { name: 'Ask PDF Copilot' });
     this.chatSendBtn = page.locator('[aria-label="chat send button"]');
     this.aiChat = page.locator('.ai-chat-messages');
     this.deepThinkingBtn = page.locator('.deep-think-animated-btn');
+    this.latestUserMsgId = this.aiChat.locator('.ai-chat-message-user').last();
   }
 
   async askAiCopilot(message: string) {
@@ -23,26 +25,19 @@ export class Copilot extends BasePage {
     }
     await this.askAi.fill(message);
     await this.chatSendBtn.click();
-    return message;
+    const msgId = await this.latestUserMsgId.getAttribute('data-user-msg-id');
+    return msgId;
   }
 
-  async getCopilotAnswerText(message: string) {
-    const aiAnswerObject = await this.getAiCopilotAnswer(message);
-    const aIanswerText = await aiAnswerObject
-      .locator("//div[contains(@class, 'ai-copilot-message')]")
-      .first()
-      .textContent();
-    return aIanswerText;
-  }
-
-  async getAiCopilotAnswer(message: string) {
-    const userQuestion = this.aiChat.locator('.ai-chat-message-user', { hasText: message });
-    const msgId = await userQuestion.getAttribute('data-user-msg-id');
-    const aiAnswer = this.aiChat.locator(`[data-ai-msg-id="${msgId}-answer"]`);
-    return aiAnswer;
+  getAiCopilotAnswer(messageId: string) {
+    return this.page.locator(`[data-ai-msg-id="${messageId}-answer"]`);
   }
 
   async waitForOverviewText() {
-    await this.overviewText.waitFor({ state: 'visible' });
+    await this.overviewText.waitFor({ state: 'visible', timeout: 20000 });
+  }
+
+  async waitForCopilotAnswer(answer: Locator) {
+    await answer.waitFor({ state: 'visible', timeout: 20000 });
   }
 }

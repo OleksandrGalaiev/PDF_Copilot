@@ -38,6 +38,7 @@ export default defineConfig(
       eqeqeq: ['error', 'always'],
       'no-duplicate-imports': 'error',
       'no-console': 'warn',
+      'no-empty': ['error', { allowEmptyCatch: true }],
     },
   },
   {

@@ -14,7 +14,7 @@ test.describe('Main actions with file', { tag: '@sanity' }, () => {
     await app.uploadFile.deleteFileIfExist();
   });
 
-  test('Upload,rename and delete', { tag: '@debug' }, async ({ app }) => {
+  test('Upload,rename and delete', { tag: '@MainActions' }, async ({ app }) => {
     await test.step('Upload empty pdf file to platform', async () => {
       await app.uploadFile.fileUpload(EMPTY_PDF_PATH);
     });

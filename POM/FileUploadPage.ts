@@ -26,7 +26,7 @@ export class FileUpload extends BasePage {
     this.activeDocument = page.locator('[class*=active-file]');
     this.noFileMessage = page.locator('.no-files-msg');
     this.languageDetectorPopup = new LanguageDetectorPopup(this.page);
-    this.displayedFileName = page.locator('.document-name');
+    this.displayedFileName = this.documentHeader.locator('.document-name');
   }
 
   async chooseDocumentMenuPoint(menuPoint: DocumentActionsMenuPoints) {
@@ -51,7 +51,7 @@ export class FileUpload extends BasePage {
 
   async deleteFileIfExist() {
     await this.languageDetectorPopup.closeIfVisible();
-    while (await this.activeDocument.isVisible()) {
+    if (await this.activeDocument.isVisible()) {
       await this.documentMenu.click();
       await this.page.locator('.context-menu-item', { hasText: 'Delete' }).click();
       await this.deleteBtn.click();
@@ -60,7 +60,7 @@ export class FileUpload extends BasePage {
   }
 
   async waitForUploadedFileNameToBeDisplayed() {
-    await this.displayedFileName.waitFor({ state: 'visible' });
+    await this.displayedFileName.waitFor({ state: 'visible', timeout: 20000 });
   }
 
   async deleteFile() {

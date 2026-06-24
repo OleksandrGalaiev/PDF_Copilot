@@ -14,8 +14,9 @@
     "paths": {
       "@pages/*": ["POM/*"],
       "@interfaces/*": ["interfaces/*"],
-      "@helpers/*": ["helpers/*"]
+      "@helpers/*": ["helpers/*"],
+      "@utils/*": ["API/utils/*"]
     }
   },
-  "include": ["POM", "tests"]
+  "include": ["POM", "tests", "API"]
 }

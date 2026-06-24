@@ -17,7 +17,7 @@ export class LanguageDetectorPopup extends BasePage {
   }
 
   async chooseLanguage(languages: Languages) {
-    await this.popupHeader.waitFor({ state: 'visible' });
+    await this.popupHeader.waitFor({ state: 'visible', timeout: 20000 });
     await this.openLanguageDropdown.click();
     await this.page.getByRole('option', { name: languages }).click();
     await this.continueBtn.click();
