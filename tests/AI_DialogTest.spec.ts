@@ -58,10 +58,13 @@ test.describe('AI Copilot chat', { tag: '@sanity' }, () => {
     { tag: '@debug' },
     async ({ app }, testInfo) => {
       testInfo.setTimeout(testInfo.timeout + 120000);
-      const question1 = 'Which item has the internal code QX-451?';
+      const secretWord = getFakeUser('en').name;
+      const question1 = `Which item has the internal code QX-451?, save secret word - ${secretWord}`;
       const reply1 = 'Zephyrine Coil';
-      const question2 = 'What is the internal code of the Hollowreed Fiber?';
-      const reply2 = 'QX-677';
+      const question2 = 'Which item has the smallest quantity?';
+      const question2_2 = 'What is its code?';
+      const reply2 = 'QX-203';
+      const question3 = 'What was secret word?';
 
       await test.step('Upload file', async () => {
         await app.uploadFile.fileUpload(PDF_MULTI_DIALOG);
@@ -77,11 +80,23 @@ test.describe('AI Copilot chat', { tag: '@sanity' }, () => {
       });
 
       await test.step(`Ask copilot about document context. Quesition 2 - ${question2}`, async () => {
-        await app.copilot.waitForOverviewText();
         const userQuestion2 = await app.copilot.askAiCopilot(question2);
         const copilotAnswer2 = app.copilot.getAiCopilotAnswer(userQuestion2!);
         await app.copilot.waitForCopilotAnswer(copilotAnswer2);
-        await expect(copilotAnswer2).toContainText(reply2);
+
+        await test.step(`Add more context to dialog, Ask - ${question2_2}`, async () => {
+          const userQuestion2_2 = await app.copilot.askAiCopilot(question2_2);
+          const copilotAnswer2_2 = app.copilot.getAiCopilotAnswer(userQuestion2_2!);
+          await app.copilot.waitForCopilotAnswer(copilotAnswer2_2);
+          await expect(copilotAnswer2_2).toContainText(reply2);
+        });
+      });
+
+      await test.step(`Ask copilot about secret word - ${question3}`, async () => {
+        const userQuestion3 = await app.copilot.askAiCopilot(question3);
+        const copilotAnswer3 = app.copilot.getAiCopilotAnswer(userQuestion3!);
+        await app.copilot.waitForCopilotAnswer(copilotAnswer3);
+        await expect(copilotAnswer3).toContainText(secretWord);
       });
     },
   );
