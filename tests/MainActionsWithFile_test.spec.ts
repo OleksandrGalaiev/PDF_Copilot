@@ -36,4 +36,30 @@ test.describe('Main actions with file', { tag: '@sanity' }, () => {
       );
     });
   });
+
+  test(
+    'Unavailable text recognition after uploading empty file',
+    { tag: '@MainActions' },
+    async ({ app }) => {
+      await test.step('Upload empty pdf file to platform', async () => {
+        await app.uploadFile.fileUpload(EMPTY_PDF_PATH);
+        await app.languageDetectorPopup.closeChooseLanguagePopup();
+      });
+
+      await test.step('Check empty file error massage in ai footer. Run text recognition', async () => {
+        await expect(app.copilot.getCopilotFooterErrorMSG()).toHaveText(
+          'No readable text found. Retry OCR to start using Copilot and Annotations.',
+        );
+        await app.copilot.runRicognitionFromFooter();
+      });
+
+      await test.step('Choose english language and recheck footer', async () => {
+        await app.languageDetectorPopup.chooseLanguage('English');
+        await app.uploadFile.waitForUploadedFileNameToBeDisplayed();
+        await expect(app.copilot.getCopilotFooterErrorMSG()).toHaveText(
+          "This document couldn't be recognized. Copilot and markup are unavailable, but reading still works.",
+        );
+      });
+    },
+  );
 });

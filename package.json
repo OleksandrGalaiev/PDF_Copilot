@@ -31,6 +31,7 @@
   "type": "commonjs",
   "devDependencies": {
     "@eslint/js": "^9.39.4",
+    "@faker-js/faker": "^10.5.0",
     "@playwright/test": "^1.60.0",
     "@types/mailparser": "^3.4.6",
     "@types/node": "^25.9.3",
